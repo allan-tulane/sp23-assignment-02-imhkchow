@@ -79,7 +79,7 @@ def quadratic_multiply(x,y):
     # O(n) addition
     return BinaryNumber(left_product.decimal_val +
                         middle_term.decimal_val +
-                        right_product.decimal_val
+                        right_product.decimal_val)
                         
 ## Feel free to add your own tests here.
 def test_multiply():
@@ -91,6 +91,7 @@ def test_multiply():
 def time_multiply(x, y, f):
     start = time.time()
     # multiply two numbers x, y using function f
+    result = f(x,y)
     return (time.time() - start)*1000
 
     
