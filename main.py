@@ -47,11 +47,48 @@ def pad(x,y):
 
 def subquadratic_multiply(x, y):
     ### TODO
-    return quadratic_multiply(x,y).decimal_val
+    return _subquadratic_multiply(x,y).decimal_val
+
+def _subquadratic_multiply(x,y):
+    xvec = x.binary_vec
+    yvec = y.binary_vec
+    xvec, yvec = pad(xvec, yvec)
+    
+    if x.decimal_val <=1 and y.decimal_val <=1:
+        return BinaryNumber(x.decimal_val * y.decimal_val)
+    
+     #split left and right for recursive call 
+    x_left, x_right = split_number(xvec)
+    y_left, y_right = split_number(yvec)
+    # multiply left sides
+    left_product = _quadratic_multiply(x_left, y_left)
+    # multiply right sides
+    right_product = _quadratic_multiply(x_right, y_right)
+    # xl and yr
+    left_right_product = _quadratic_multiply(x_left, y_right)
+    # vice versa^^^
+    right_left_product = _quadratic_multiply(x_right, y_left)
+    middle_term = BinaryNumber(left_right_product.decimal_val +
+                               right_left_product.decimal_val)
+    # 2^n/2 equation middle term
+    middle_term = bit_shift(middle_term, len(xvec)//2)
+    
+    # 2^n (xL * yL)
+    left_product = bit_shift(left_product, len(xvec))
+    
+    # O(n) addition
+    return BinaryNumber(left_product.decimal_val +
+                        middle_term.decimal_val +
+                        right_product.decimal_val)
+    
+    
     pass
     ###
 
 def quadratic_multiply(x,y): 
+    return _quadratic_multiply(x,y).decimal_val
+
+def _quadratic_multiply(x,y)
     xvec = x.binary_vec
     yvec = y.binary_vec
     xvec, yvec = pad(xvec, yvec)
